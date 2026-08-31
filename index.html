@@ -588,13 +588,136 @@
     .music-btn{ width:58px; height:58px; font-size:23px; }
   }
 
+  /* ---------- Floating lock (edit) ---------- */
+  .lock-player{
+    position:fixed;
+    left:10px;
+    bottom:24px;
+    width:68px;
+    height:68px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:9999;
+    pointer-events:none;
+  }
+  .lock-btn{
+    width:62px;
+    height:62px;
+    border-radius:50%;
+    border:1px solid rgba(122,155,184,.72);
+    background:linear-gradient(145deg,#1a2432,#0a1018);
+    color:var(--accent-0);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:22px;
+    line-height:1;
+    cursor:pointer;
+    pointer-events:auto;
+    box-shadow:0 10px 28px rgba(0,0,0,.48), inset 0 1px 0 rgba(255,255,255,.14), 0 0 0 5px rgba(47,65,87,.12);
+    transition:transform .18s ease, background .18s ease, box-shadow .18s ease, border-color .18s ease;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .lock-btn:hover{
+    background:linear-gradient(145deg,#243548,#0e1520);
+    box-shadow:0 12px 32px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.16), 0 0 0 6px rgba(47,65,87,.16);
+  }
+  .lock-btn:active{ transform:scale(.92); }
+  .lock-btn.unlocked{
+    background:linear-gradient(145deg,#1a2a1a,#0d140d);
+    border-color:rgba(120,200,120,.7);
+    color:#9dff9d;
+    box-shadow:0 10px 28px rgba(0,0,0,.48), inset 0 1px 0 rgba(255,255,255,.14), 0 0 0 5px rgba(120,200,120,.12);
+  }
+  @media (max-width:520px){
+    .lock-player{ left:8px; bottom:22px; }
+    .lock-btn{ width:58px; height:58px; font-size:20px; }
+  }
+
+  .pin-overlay{
+    position:fixed; inset:0; z-index:10000;
+    background:rgba(0,0,0,.72); backdrop-filter:blur(8px);
+    display:flex; align-items:center; justify-content:center;
+    opacity:0; pointer-events:none; transition:opacity .25s ease;
+  }
+  .pin-overlay.show{ opacity:1; pointer-events:auto; }
+  .pin-box{
+    width:min(320px,90vw);
+    background:linear-gradient(180deg, var(--bg-1), var(--bg-2));
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:28px 24px 22px;
+    box-shadow:var(--shadow-deep);
+    text-align:center;
+  }
+  .pin-title{
+    font-family:'Cormorant Garamond', serif;
+    font-size:22px; font-weight:700; color:var(--ink-0); margin-bottom:6px;
+  }
+  .pin-sub{ color:var(--ink-2); font-size:12px; letter-spacing:.08em; text-transform:uppercase; margin-bottom:20px; }
+  .pin-dots{ display:flex; gap:12px; justify-content:center; margin-bottom:22px; }
+  .pin-dot{
+    width:14px; height:14px; border-radius:50%;
+    border:2px solid var(--navy-0);
+    background:transparent; transition:background .15s ease;
+  }
+  .pin-dot.filled{ background:var(--accent-0); border-color:var(--accent-0); }
+  .pin-pad{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px; max-width:240px; margin:0 auto; }
+  .pin-key{
+    height:52px; border-radius:14px; border:1px solid var(--line);
+    background:var(--bg-0); color:var(--ink-0); font-size:20px; font-weight:600;
+    cursor:pointer; transition:transform .12s ease, background .12s ease;
+  }
+  .pin-key:active{ transform:scale(.94); background:var(--bg-2); }
+  .pin-key.action{ color:var(--accent-0); font-size:15px; }
+  .pin-error{ color:#e88a8a; font-size:13px; margin-top:14px; min-height:18px; opacity:0; transition:opacity .2s; }
+  .pin-error.show{ opacity:1; }
+
+  body.edit-mode .name,
+  body.edit-mode .role,
+  body.edit-mode .row-value,
+  body.edit-mode .subtitle,
+  body.edit-mode .paycard-number,
+  body.edit-mode .paycard-holder{
+    outline:1px dashed rgba(122,155,184,.5);
+    outline-offset:3px;
+    border-radius:6px;
+    cursor:text;
+  }
+  body.edit-mode .name:focus,
+  body.edit-mode .role:focus,
+  body.edit-mode .row-value:focus,
+  body.edit-mode .subtitle:focus,
+  body.edit-mode .paycard-number:focus,
+  body.edit-mode .paycard-holder:focus{
+    outline:2px solid var(--accent-0);
+    background:rgba(122,155,184,.1);
+  }
+  .edit-bar{
+    position:fixed; left:50%; bottom:100px; transform:translateX(-50%) translateY(20px);
+    z-index:9998; display:flex; gap:10px;
+    opacity:0; pointer-events:none; transition:opacity .25s ease, transform .25s ease;
+  }
+  body.edit-mode .edit-bar{ opacity:1; pointer-events:auto; transform:translateX(-50%) translateY(0); }
+  .edit-bar button{
+    padding:12px 20px; border-radius:12px; border:1px solid var(--line);
+    font-weight:600; font-size:14px; cursor:pointer;
+    background:var(--bg-1); color:var(--ink-0);
+  }
+  .edit-bar .save-btn{
+    background:linear-gradient(135deg, var(--navy-0), var(--navy-1) 55%, var(--navy-2));
+    color:#f0f4f8; border:none; font-weight:700;
+  }
+
+
   /* Only real interactive elements should advertise interaction. */
   .section-label, .footer, .name, .role, .subtitle, .divider, .avatar-wrap, .copy-hint{
     cursor:default;
     user-select:none;
   }
   .paycard{ cursor:pointer; }
-  .btn, a.row, #shareBtn, #musicBtn{ cursor:pointer; }
+  .btn, a.row, #shareBtn, #musicBtn, #lockBtn{ cursor:pointer; }
 
 
   /* ---------- Apple-inspired motion layer ---------- */
@@ -824,6 +947,46 @@ button.share{font-family:inherit;width:100%;}
 
 </head>
 <body>
+
+  <div class="lock-player" aria-label="Edit lock">
+    <button class="lock-btn" id="lockBtn" type="button" aria-label="Lock / Unlock edit" title="Tahrirlash">
+      <span class="lock-icon">🔒</span>
+    </button>
+  </div>
+
+  <div class="pin-overlay" id="pinOverlay">
+    <div class="pin-box">
+      <div class="pin-title">Kod kiriting</div>
+      <div class="pin-sub">Tahrirlash uchun</div>
+      <div class="pin-dots" id="pinDots">
+        <div class="pin-dot"></div>
+        <div class="pin-dot"></div>
+        <div class="pin-dot"></div>
+        <div class="pin-dot"></div>
+      </div>
+      <div class="pin-pad" id="pinPad">
+        <button class="pin-key" data-k="1">1</button>
+        <button class="pin-key" data-k="2">2</button>
+        <button class="pin-key" data-k="3">3</button>
+        <button class="pin-key" data-k="4">4</button>
+        <button class="pin-key" data-k="5">5</button>
+        <button class="pin-key" data-k="6">6</button>
+        <button class="pin-key" data-k="7">7</button>
+        <button class="pin-key" data-k="8">8</button>
+        <button class="pin-key" data-k="9">9</button>
+        <button class="pin-key action" data-k="clear">⌫</button>
+        <button class="pin-key" data-k="0">0</button>
+        <button class="pin-key action" data-k="ok">OK</button>
+      </div>
+      <div class="pin-error" id="pinError">Noto‘g‘ri kod</div>
+    </div>
+  </div>
+
+  <div class="edit-bar" id="editBar">
+    <button type="button" class="save-btn" id="saveEditBtn">💾 Saqlash</button>
+    <button type="button" id="cancelEditBtn">Yopish</button>
+  </div>
+
 
   <div class="music-player" aria-label="Music player">
     <button class="music-btn" id="musicBtn" type="button" aria-label="Play music" title="Play / Pause">
@@ -1075,5 +1238,186 @@ document.addEventListener('DOMContentLoaded',()=>{
   });
 });
 </script>
+
+<script>
+(function(){
+  const PIN = '1001';
+  const STORAGE_KEY = 'asilbek_card_data_v1';
+  let pinBuffer = '';
+  let isUnlocked = false;
+
+  const lockBtn = document.getElementById('lockBtn');
+  const lockIcon = lockBtn.querySelector('.lock-icon');
+  const overlay = document.getElementById('pinOverlay');
+  const dots = [...document.querySelectorAll('#pinDots .pin-dot')];
+  const pinError = document.getElementById('pinError');
+
+  const elSurname = document.querySelector('.name .surname');
+  const elGiven = document.querySelector('.name .given-name');
+  const elRole = document.querySelector('.role');
+  const elSubtitle = document.querySelector('.subtitle');
+  const phoneRow = document.querySelector('a.row[href^="tel:"] .row-value');
+  const emailRow = document.querySelector('a.row[href^="mailto:"] .row-value');
+  const igRow = document.querySelector('#igLink .row-value');
+  const tgRow = document.querySelector('a.row[href*="t.me"] .row-value');
+  const phoneLink = document.querySelector('a.row[href^="tel:"]');
+  const emailLink = document.querySelector('a.row[href^="mailto:"]');
+  const igLink = document.getElementById('igLink');
+  const tgLink = document.querySelector('a.row[href*="t.me"]');
+  const contactBtn = document.querySelector('a.btn.primary[href^="tel:"]');
+  const emailBtn = document.querySelector('a.btn[href^="mailto:"]');
+  const footerName = document.querySelector('.footer');
+  const paycards = [...document.querySelectorAll('.paycard[data-number]')];
+  const payNumbers = paycards.map(c => c.querySelector('.paycard-number'));
+  const payHolders = paycards.map(c => c.querySelector('.paycard-holder'));
+
+  function updateDots(){
+    dots.forEach((d,i) => d.classList.toggle('filled', i < pinBuffer.length));
+  }
+  function showOverlay(){
+    pinBuffer = '';
+    updateDots();
+    pinError.classList.remove('show');
+    overlay.classList.add('show');
+  }
+  function hideOverlay(){
+    overlay.classList.remove('show');
+    pinBuffer = '';
+    updateDots();
+  }
+
+  function setUnlocked(val){
+    isUnlocked = val;
+    document.body.classList.toggle('edit-mode', val);
+    lockBtn.classList.toggle('unlocked', val);
+    lockIcon.textContent = val ? '🔓' : '🔒';
+    const editables = [elSurname, elGiven, elRole, elSubtitle, phoneRow, emailRow, igRow, tgRow, ...payNumbers, ...payHolders];
+    editables.forEach(el => {
+      if (!el) return;
+      el.contentEditable = val ? 'true' : 'false';
+      if (!val) el.blur();
+    });
+  }
+
+  function checkPin(){
+    if (pinBuffer === PIN){
+      hideOverlay();
+      setUnlocked(true);
+    } else {
+      pinError.classList.add('show');
+      pinBuffer = '';
+      updateDots();
+      setTimeout(() => pinError.classList.remove('show'), 1500);
+    }
+  }
+
+  document.getElementById('pinPad').addEventListener('click', (e) => {
+    const btn = e.target.closest('.pin-key');
+    if (!btn) return;
+    const k = btn.dataset.k;
+    if (k === 'clear'){ pinBuffer = pinBuffer.slice(0,-1); updateDots(); return; }
+    if (k === 'ok'){ checkPin(); return; }
+    if (pinBuffer.length >= 4) return;
+    pinBuffer += k;
+    updateDots();
+    if (pinBuffer.length === 4) setTimeout(checkPin, 180);
+  });
+
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) hideOverlay(); });
+
+  lockBtn.addEventListener('click', () => {
+    if (isUnlocked) setUnlocked(false);
+    else showOverlay();
+  });
+
+  function collectData(){
+    return {
+      surname: elSurname ? elSurname.textContent.trim() : '',
+      given: elGiven ? elGiven.textContent.trim() : '',
+      role: elRole ? elRole.textContent.trim() : '',
+      subtitle: elSubtitle ? elSubtitle.textContent.trim() : '',
+      phone: phoneRow ? phoneRow.textContent.trim() : '',
+      email: emailRow ? emailRow.textContent.trim() : '',
+      ig: igRow ? igRow.textContent.trim() : '',
+      tg: tgRow ? tgRow.textContent.trim() : '',
+      cards: paycards.map((c,i) => ({
+        number: payNumbers[i] ? payNumbers[i].textContent.trim() : '',
+        holder: payHolders[i] ? payHolders[i].textContent.trim() : '',
+        dataNumber: (payNumbers[i] ? payNumbers[i].textContent : '').replace(/\s/g,'')
+      }))
+    };
+  }
+
+  function applyData(d){
+    if (!d) return;
+    if (elSurname && d.surname != null) elSurname.textContent = d.surname;
+    if (elGiven && d.given != null) elGiven.textContent = d.given;
+    if (elRole && d.role != null) elRole.textContent = d.role;
+    if (elSubtitle && d.subtitle != null) elSubtitle.textContent = d.subtitle;
+    if (phoneRow && d.phone != null) phoneRow.textContent = d.phone;
+    if (emailRow && d.email != null) emailRow.textContent = d.email;
+    if (igRow && d.ig != null) igRow.textContent = d.ig;
+    if (tgRow && d.tg != null) tgRow.textContent = d.tg;
+
+    if (d.cards && Array.isArray(d.cards)) {
+      d.cards.forEach((card, i) => {
+        if (payNumbers[i] && card.number != null) payNumbers[i].textContent = card.number;
+        if (payHolders[i] && card.holder != null) payHolders[i].textContent = card.holder;
+        if (paycards[i] && card.dataNumber != null) paycards[i].setAttribute('data-number', card.dataNumber);
+        else if (paycards[i] && card.number != null) paycards[i].setAttribute('data-number', card.number.replace(/\s/g,''));
+      });
+    }
+
+    const phoneDigits = (d.phone || '').replace(/[^\d+]/g, '');
+    if (phoneLink && phoneDigits) phoneLink.href = 'tel:' + phoneDigits;
+    if (contactBtn && phoneDigits) contactBtn.href = 'tel:' + phoneDigits;
+    if (emailLink && d.email) emailLink.href = 'mailto:' + d.email;
+    if (emailBtn && d.email) emailBtn.href = 'mailto:' + d.email;
+    if (igLink && d.ig) {
+      const h = d.ig.replace(/^@/, '');
+      igLink.href = 'https://www.instagram.com/' + h;
+    }
+    if (tgLink && d.tg) {
+      const h = d.tg.replace(/^@/, '');
+      tgLink.href = 'https://t.me/' + h;
+    }
+    if (footerName && (d.surname || d.given)) {
+      footerName.innerHTML = (d.surname + ' ' + d.given).trim() + ' <span>·</span> Digital Card';
+    }
+  }
+
+  document.getElementById('saveEditBtn').addEventListener('click', () => {
+    const data = collectData();
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch(e) {}
+    applyData(data);
+    setUnlocked(false);
+    if (window.showPremiumToast) window.showPremiumToast('Saqlandi ✓');
+    else alert('Saqlandi ✓');
+  });
+
+  document.getElementById('cancelEditBtn').addEventListener('click', () => {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) applyData(JSON.parse(raw));
+    } catch(e) {}
+    setUnlocked(false);
+  });
+
+  document.querySelectorAll('a.row, a.btn').forEach(a => {
+    a.addEventListener('click', (e) => { if (isUnlocked) e.preventDefault(); });
+  });
+
+  // Prevent card copy while editing
+  document.querySelectorAll('.paycard').forEach(card => {
+    card.addEventListener('click', (e) => { if (isUnlocked) e.stopImmediatePropagation(); }, true);
+  });
+
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) applyData(JSON.parse(raw));
+  } catch(e) {}
+})();
+</script>
+
 </body>
 </html>
